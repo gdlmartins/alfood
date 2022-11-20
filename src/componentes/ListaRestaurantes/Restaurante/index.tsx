@@ -1,3 +1,8 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { BASEURL } from '..';
+import { IPaginacao } from '../../../interfaces/IPaginacao';
+import IPrato from '../../../interfaces/IPrato';
 import IRestaurante from '../../../interfaces/IRestaurante';
 import Prato from '../Prato';
 import estilos from './Restaurante.module.scss';
@@ -7,13 +12,33 @@ interface RestauranteProps {
 }
 
 const Restaurante = ({ restaurante }: RestauranteProps) => {
+  const [dishsList, setDishsList] = useState<IPrato[]>();
+ 
+  console.log( restaurante)
+ 
+  const pratosList = async () => {
+    axios
+      .get<IPrato[]>(`${BASEURL}restaurantes/${restaurante.id}/pratos/`)
+      .then(resp => {
+        
+        setDishsList(resp.data)
+        console.log(resp.data)
+      })
+      .catch(e => console.log(e))
+
+  }
+
+  useEffect(()=>{
+    pratosList()
+  },[restaurante.id])
+
 
   return (<section className={estilos.Restaurante}>
     <div className={estilos.Titulo}>
       <h2>{restaurante.nome}</h2>
     </div>
     <div>
-      {restaurante.pratos?.map(item => <Prato prato={item} key={item.id} />)}
+      {dishsList?.map(item => <Prato prato={item} key={item.id} />)}
     </div>
   </section>)
 }
