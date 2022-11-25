@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { BASEURL } from '..';
+import { httpV1 } from '../../../http';
 import { IPaginacao } from '../../../interfaces/IPaginacao';
 import IPrato from '../../../interfaces/IPrato';
 import IRestaurante from '../../../interfaces/IRestaurante';
@@ -17,8 +17,8 @@ const Restaurante = ({ restaurante }: RestauranteProps) => {
   console.log( restaurante)
  
   const pratosList = async () => {
-    axios
-      .get<IPrato[]>(`${BASEURL}restaurantes/${restaurante.id}/pratos/`)
+    httpV1
+      .get<IPrato[]>(`restaurantes/${restaurante.id}/pratos/`)
       .then(resp => {
         
         setDishsList(resp.data)

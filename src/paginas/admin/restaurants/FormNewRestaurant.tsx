@@ -1,7 +1,9 @@
-import { Button, TextField } from "@mui/material";
+import { AppBar, Button, Link, Paper, TextField, Toolbar, Typography } from "@mui/material";
+import { Box, Container, padding } from "@mui/system";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
+import { httpV2 } from "../../../http";
 
 
 const FormNewRestaurant = () => {
@@ -11,7 +13,7 @@ const FormNewRestaurant = () => {
     const [restaurant, setRestaurant] = useState<string>("");
 
     const getRestaurant = () => {
-        axios.get(`http://localhost:8000/api/v2/restaurantes/${id}/`)
+        httpV2.get(`restaurantes/${id}/`)
             .then((resp) => {
                 setRestaurant(resp.data.nome)
             })
@@ -19,15 +21,15 @@ const FormNewRestaurant = () => {
     }
 
     const editRestaurant = (nome: string) => {
-        axios.put(`http://localhost:8000/api/v2/restaurantes/${id}/`, { nome })
-            .then(() =>{
+        httpV2.put(`restaurantes/${id}/`, { nome })
+            .then(() => {
                 navegate(`/admin/restaurants`);
                 // navegate(-1);
             })
     }
 
     const addRestaurant = (nome: string) => {
-        axios.post(`http://localhost:8000/api/v2/restaurantes/`, { nome })
+        httpV2.post(`restaurantes/`, { nome })
             .then(() => {
                 // navegate(-1);
                 navegate(`/admin/restaurants`);
@@ -49,16 +51,36 @@ const FormNewRestaurant = () => {
 
 
     return (
-        <form onSubmit={(e) => submitHanler(e)}>
-            <TextField
-                variant='standard'
-                value={restaurant}
-                onChange={(e) => setRestaurant(e.target.value)}
-            />
-            <Button variant="outlined"
-                type="submit"
-            >Submit</Button>
-        </form>
+
+                <Paper>
+                 
+
+                        <Box 
+                        sx={{
+                            margin: '10px Auto',
+                        //     justifyContent: "space-between",
+                        //     alignItems: "center",
+                        //     width: "500px"
+                        }}
+                         >
+                            <Typography>Formulario</Typography>
+                            <form
+                            
+                                onSubmit={(e) => submitHanler(e)}>
+
+                                <TextField
+                                    required
+                                    variant='standard'
+                                    value={restaurant}
+                                    onChange={(e) => setRestaurant(e.target.value)}
+                                />
+                                <Button variant="outlined"
+                                    type="submit"
+                                >Submit</Button>
+                            </form>
+                        </Box>
+                </Paper>
+
     )
 
 }

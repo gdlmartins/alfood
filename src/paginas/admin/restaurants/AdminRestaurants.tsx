@@ -1,11 +1,11 @@
 import React from "react";
 import { Paper, TableRow, TableCell, TableContainer, TableHead, Table, TableBody, Button } from "@mui/material";
-import axios from "axios";
 import { useState } from "react";
 import IRestaurante from "../../../interfaces/IRestaurante";
 import { Link ,useNavigate } from "react-router-dom";
 
 import {BsTrash} from 'react-icons/bs';
+import { httpV2 } from "../../../http";
 
 
 const AdminRestaurants = () => {
@@ -14,22 +14,22 @@ const AdminRestaurants = () => {
     const [restaurants, setRestaurants] = useState<IRestaurante[]>([]);
 
     const getRestaurantes = () => {
-        axios.get<IRestaurante[]>(`http://localhost:8000/api/v2/restaurantes/`)
+        httpV2.get<IRestaurante[]>(`restaurantes/`)
             .then(res => {
                 setRestaurants(res.data)
             })
             .catch(e => console.log(e))
     }
 
-
     const deleteRestaurant = (id: number) => {
-        axios.delete(`http://localhost:8000/api/v2/restaurantes/${id}/`)
-            .then(() => getRestaurantes())
+        httpV2.delete(`v2/restaurantes/${id}/`)
+            // .then(() => getRestaurantes())
+            .then(() => {
+                const restaurantFiltered  = restaurants.filter(r =>  r.id !== id)
+                setRestaurants(restaurantFiltered);
+            })
     }
-
-    const editRestaurant = (id: number, nome: string) => {
-        axios.put(`http://localhost:8000/api/v2/restaurantes/${id}/`, { nome })
-    }
+ 
     React.useEffect(() => {
         getRestaurantes()
     }, [])
@@ -61,10 +61,8 @@ const AdminRestaurants = () => {
                                     onClick={() => deleteRestaurant(r.id)}
                                 ><BsTrash/>
                                 </Button>
-
                             </TableCell>
                         </TableRow>
-
                     ))}
                 </TableBody>
             </Table>
