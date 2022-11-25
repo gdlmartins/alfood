@@ -4,6 +4,10 @@ import axios from "axios";
 import { useState } from "react";
 import IRestaurante from "../../../interfaces/IRestaurante";
 import { Link ,useNavigate } from "react-router-dom";
+
+import {BsTrash} from 'react-icons/bs';
+
+
 const AdminRestaurants = () => {
     const navegate = useNavigate();
 
@@ -55,7 +59,7 @@ const AdminRestaurants = () => {
                             <TableCell >
                                 <Button
                                     onClick={() => deleteRestaurant(r.id)}
-                                >Delete
+                                ><BsTrash/>
                                 </Button>
 
                             </TableCell>
