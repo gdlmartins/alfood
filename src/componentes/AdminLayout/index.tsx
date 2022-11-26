@@ -4,8 +4,6 @@ import { AppBar, Button, Link, Toolbar, Typography } from "@mui/material"
 import { Box, Container } from "@mui/system"
 
 
-
-
 const AdminLayout = ()=>{
 return (
 <>
@@ -24,6 +22,11 @@ return (
                 <Link component={LinkRouter} to={"/admin/restaurants/novo"}>
                     <Button sx={{ my: 2, color: "white" }}>
                         New Restaurants
+                    </Button>
+                </Link>
+                <Link component={LinkRouter} to={"/admin/dish/novo"}>
+                    <Button sx={{ my: 2, color: "white" }}>
+                        New Dish
                     </Button>
                 </Link>
             </Box>

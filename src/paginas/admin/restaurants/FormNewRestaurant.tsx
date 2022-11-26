@@ -58,23 +58,29 @@ const FormNewRestaurant = () => {
                         <Box 
                         sx={{
                             margin: '10px Auto',
+                            padding:"20px"
                         //     justifyContent: "space-between",
                         //     alignItems: "center",
                         //     width: "500px"
                         }}
                          >
-                            <Typography>Formulario</Typography>
+                            <Typography align="center">Formulario</Typography>
                             <form
                             
                                 onSubmit={(e) => submitHanler(e)}>
 
                                 <TextField
+                                margin="dense"
+                                placeholder="Restaurant... "
                                     required
+                                    fullWidth
                                     variant='standard'
                                     value={restaurant}
                                     onChange={(e) => setRestaurant(e.target.value)}
                                 />
                                 <Button variant="outlined"
+                                fullWidth
+                                
                                     type="submit"
                                 >Submit</Button>
                             </form>
