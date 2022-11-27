@@ -21,6 +21,7 @@ const FormNewDish = () => {
     const [tag , setTag] = useState<string>("");
     const [description , setDescription] = useState<string>("");
     const [restaraunt , setRestaraunt] = useState<string>("");
+    const [restarauntNome , setRestarauntNome] = useState<string>("");
 
     const [imagem , setImagem] = useState<File | null >(null)
 
@@ -32,7 +33,13 @@ const FormNewDish = () => {
                 "Content-Type" : "multipart/form-data"
             },
             data: data 
-        }).then(()=> alert("Adicionado"))
+        }).then(()=> {
+            alert("Adicionado")
+            setDish("")
+            setDescription("")
+            setTag("")
+            setRestaraunt("")
+        })
         .catch((e)=> console.log(e))
     }
     
@@ -131,7 +138,10 @@ const FormNewDish = () => {
                             required
                             value={restaraunt}
                             variant='standard'
-                            onChange={(e) => setRestaraunt(e.target.name)}
+                            onChange={(e) => {
+                                setRestaraunt(e.target.value)
+                            }
+                            }
                         >
                             {restaurants?.map(restaraunt => <MenuItem
                                 key={restaraunt.id}
