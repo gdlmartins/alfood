@@ -34,6 +34,11 @@ return (
                         Dishes
                     </Button>
                 </Link>
+                <Link component={LinkRouter} to={"/"}>
+                    <Button sx={{ my: 2, color: "white" }}>
+                        Home
+                    </Button>
+                </Link>
             </Box>
         </Toolbar>
 
