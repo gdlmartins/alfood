@@ -29,6 +29,11 @@ return (
                         New Dish
                     </Button>
                 </Link>
+                <Link component={LinkRouter} to={"/admin/dishes"}>
+                    <Button sx={{ my: 2, color: "white" }}>
+                        Dishes
+                    </Button>
+                </Link>
             </Box>
         </Toolbar>
 

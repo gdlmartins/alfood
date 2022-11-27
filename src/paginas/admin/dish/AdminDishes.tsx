@@ -2,35 +2,49 @@ import React from "react";
 import { Paper, TableRow, TableCell, TableContainer, TableHead, Table, TableBody, Button } from "@mui/material";
 import { useState } from "react";
 import IRestaurante from "../../../interfaces/IRestaurante";
-import { Link ,useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import {BsTrash} from 'react-icons/bs';
 import { httpV2 } from "../../../http";
+import IPrato from "../../../interfaces/IPrato";
+import { NOMEM } from "dns";
 
 
-const AdminRestaurants = () => {
+const AdminDishes = () => {
     const navegate = useNavigate();
 
-    const [restaurants, setRestaurants] = useState<IRestaurante[]>([]);
+    const [dishes, setDishes] = useState<IPrato[]>([]);
+    const [restaurantes, setRestaurantes] = useState<IRestaurante[]>([]);
 
-    const getRestaurantes = () => {
-        httpV2.get<IRestaurante[]>(`restaurantes/`)
+    const getDishes = () => {
+        httpV2.get<IPrato[]>(`pratos/`)
             .then(res => {
-                setRestaurants(res.data)
+                setDishes(res.data)
             })
             .catch(e => console.log(e))
     }
 
-    const deleteRestaurant = (id: number) => {
-        httpV2.delete(`restaurantes/${id}/`)
-            // .then(() => getRestaurantes())
+    const getRestaurantes = ()=>{
+        httpV2.get<IRestaurante[]>(`restaurantes/`)
+          .then(res => setRestaurantes(res.data))
+    }
+    
+    let newdishes: any[] = [];
+    dishes.forEach(d => restaurantes.forEach(r =>  {if(r.id === d.restaurante){
+        newdishes.push( {...d , restaurante: r.nome})       
+    } }))
+
+    const deleteDish = (id: number) => {
+        httpV2.delete(`pratos/${id}/`)
+            // .then(() => getDishes())
             .then(() => {
-                const restaurantFiltered  = restaurants.filter(r =>  r.id !== id)
-                setRestaurants(restaurantFiltered);
+                const dishedFiltered  = dishes.filter(r =>  r.id !== id)
+                setDishes(dishedFiltered);
             })
     }
  
     React.useEffect(() => {
+        getDishes()
         getRestaurantes()
     }, [])
 
@@ -45,20 +59,26 @@ const AdminRestaurants = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {restaurants?.map(r => (
+                    { newdishes?.map(r => (
                         <TableRow key={r.id}>
                             <TableCell >
                                 {r.nome}
                             </TableCell>
                             <TableCell >
+                                {r.tag}
+                            </TableCell>
+                            <TableCell >
+                                {r.restaurante}
+                            </TableCell>
+                            <TableCell >
                                 <Button
-                                    onClick={() => navegate(`/admin/restaurants/${r.id}`)}
+                                    onClick={() => navegate(`/admin/dishes/${r.id}`)}
                                 >Edit
                                 </Button>
                             </TableCell>
                             <TableCell >
                                 <Button
-                                    onClick={() => deleteRestaurant(r.id)}
+                                    onClick={() => deleteDish(r.id)}
                                 ><BsTrash/>
                                 </Button>
                             </TableCell>
@@ -70,4 +90,4 @@ const AdminRestaurants = () => {
     )
 }
 
-export default AdminRestaurants;
+export default AdminDishes;
